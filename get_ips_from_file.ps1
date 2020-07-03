@@ -1,23 +1,23 @@
-<####################################################################################### 
+<#######################################################################################
 Script Name: get_ips_from_file.ps1
-Description: Function for extracting list of IPs from a file. 
+Description: Function for extracting list of IPs from a file.
 - Useful for parsing IPs from Accounting team equipment "dump" files.
 - Output provided in "results.txt"
-Author: DJE 
+Author: DJE
 Date Created: 4/20/2019
-Usage - Provide full path to input file for the $file variable then run the script: .\get_ips_from_file.ps1 
-########################################################################################> 
+Usage - Provide full path to input file for the $file variable then run the script: .\get_ips_from_file.ps1
+########################################################################################>
 
 #Function
-Function ExtractValidIPAddress($String){
-    $IPregex=�(?<Address>((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))�
-    If ($String -Match $IPregex) {$Matches.Address}
+Function ExtractValidIPAddress($eii){
+    $IPregex= [regex]:: new('((?:(?:1\d\d|2[0-5][0-5]|2[0-4]\d|0?[1-9]\d|0?0?\d)\.){3}(?:1\d\d|2[0-5][0-5]|2[0-4]\d|0?[1-9]\d|0?0?\d))')
+    $Matches = $IPregex.Matches($eii)
+    return $Matches.value
 }
  
-#Log line
-$file = gc 'C:\temp\equipment_dump_20190312.txt'
+# Get contents of file that contains possible IPs
+$file = gc '.\ips.txt'
  
-#Run function
+# Pass each line to the function to obtain IP address matches. If found, write them to results.txt
 foreach ($i in $file){
 ExtractValidIPAddress $i >> results.txt
-}
