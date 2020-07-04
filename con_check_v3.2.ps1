@@ -44,7 +44,7 @@ Function prt_check1{
 param([string]$pci)
 $ar1=$null
 $ar1=@()
-$ports = "135","445","22","161"
+$ports = "135","445","22","161","3389"
   foreach($p1 in $ports){
      $cmd1=Test-netconnection -ComputerName $pci -port $p1 -WarningAction SilentlyContinue
      $res1 = $cmd1.tcptestsucceeded
