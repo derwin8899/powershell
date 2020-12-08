@@ -27,7 +27,7 @@ $cmd = {
 	[pscustomobject]$obj = New-Object psobject
     $obj | Add-Member -Type NoteProperty -Name "computer" -Value $compname
     $obj | Add-Member -Type NoteProperty -Name "user" -Value $procowner.user
-	  $obj | Add-Member -Type NoteProperty -Name "process" -Value $line.processId.tostring()
+    $obj | Add-Member -Type NoteProperty -Name "process" -Value $line.processId.tostring()
     $obj | Add-Member -Type NoteProperty -Name "domain" -Value $procowner.domain
     $return += $obj
   }
