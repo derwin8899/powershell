@@ -19,13 +19,13 @@ $report = @()
 [string]$auinstallday = 'ScheduledInstallDay'
 [string]$auinstalltime = 'ScheduledInstallTime'
 
-[array]$computers = "PHserver1","PHserver2"
+[array]$computers = "PHserver1", "PHserver2"
 foreach ($computer in $computers) {
   echo "Testing $computer  ----------------------------------"
 
   # If server is not reachable update report object and quit
   $test_connect = test-connection -count 1 $computer
-  If(!$test_connect){
+  If (!$test_connect) {
     echo "connection to $computer failed"
     [string]$connect_result = "Failed"
     $obj1 = new-object PSObject 
@@ -33,18 +33,18 @@ foreach ($computer in $computers) {
     $obj1 | add-member -membertype NoteProperty -name "Connect" -Value $connect_result
     $report += $obj1
   }
-  else{
+  else {
     echo "connection to $computer is good. moving on..."
     [string]$connect_result = "OK"
 
     [string]$computer_os = (Get-WMIObject -ComputerName $computer win32_operatingsystem).caption
     
     $key1 = 'Software\Policies\Microsoft\Windows\windowsupdate'
-	  $reg1 = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $computer)
-	  $regkey1 = $reg1.opensubkey($key1)
+    $reg1 = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $computer)
+    $regkey1 = $reg1.opensubkey($key1)
     $key2 = 'Software\Policies\Microsoft\Windows\windowsupdate\AU'
     $reg2 = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $computer)
-	  $regkey2 = $reg2.opensubkey($key2)
+    $regkey2 = $reg2.opensubkey($key2)
     $obj1 = new-object PSObject 
     $obj1 | add-member -membertype NoteProperty -name "Server" -Value $computer
     $obj1 | add-member -membertype NoteProperty -name "Connect" -Value $connect_result
@@ -55,7 +55,7 @@ foreach ($computer in $computers) {
     $obj1 | add-member -membertype NoteProperty -name "InstallDay" -Value $regkey2.getvalue($auinstallday)
     $obj1 | add-member -membertype NoteProperty -name "InstallTime" -Value $regkey2.getvalue($auinstalltime)
     $report += $obj1
-    }
+  }
 }
 
 $report | Out-GridView
