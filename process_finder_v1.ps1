@@ -52,7 +52,6 @@ foreach ($comp in $complist) {
 get-job | wait-job
 $returnedinfo = get-job | receive-job 
 
-
 # Iternate throught the info returned putting each set of values into an object, then all objects into the final array.
 foreach ($item in $returnedinfo) {
   [pscustomobject]$lineobj = New-Object psobject
@@ -65,7 +64,4 @@ foreach ($item in $returnedinfo) {
 
 # Display the object in gridview.
 $report | Out-GridView
-
-
-
 
